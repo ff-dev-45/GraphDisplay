@@ -3,6 +3,7 @@ package graphdisplay.forms;
 import graphdisplay.Edge;
 import graphdisplay.Graph;
 import graphdisplay.GraphModel;
+import graphdisplay.NormalGraph;
 import graphdisplay.Vertex;
 import graphdisplay.forms.util.FormComponent;
 import graphdisplay.forms.util.FormHandler;
@@ -13,6 +14,18 @@ import graphdisplay.forms.util.FormHandler;
  *
  */
 public class FormResolver {
+	
+	/**
+	 * Returns a FormComponent for a new Graph creation GraphFormElement
+	 * @return the new GraphForm element
+	 */
+	public static FormComponent getForm() {
+		FormComponent form = new FormComponent();
+		
+		form.addFormElement(new GraphFormElement());
+		
+		return form;
+	}
 	
 	/**
 	 * Returns the FormComponent for a Vertex creation, in which data can be entered
@@ -43,8 +56,9 @@ public class FormResolver {
 		return form;
 	}
 	
+	
 	/**
-	 * Returns a FormHandler for creating the desired instance of the specified class, either Vertex/Edge,
+	 * Returns a FormHandler for creating the desired instance of the specified class, either Graph/Vertex/Edge,
 	 * the returned handler is able to process the given form and retrieve required data
 	 * @param cls the specified class to be instantiated
 	 * @param model the GraphModel for which the new object will be added into
@@ -60,7 +74,10 @@ public class FormResolver {
 		if(cls==Edge.class) {
 			handler = new EdgeFormHandler(model, graph);
 		}
-		
+		if(cls==NormalGraph.class) {
+			handler = new GraphFormHandler(model);
+		}
 		return handler;
 	}
+	
 }

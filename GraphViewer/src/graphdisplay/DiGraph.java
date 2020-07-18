@@ -7,6 +7,7 @@ import java.util.List;
 public class DiGraph implements Graph {
 	private List<Vertex>_vertices;
 	private GraphContainer _container;
+	private String _name = "";
 	
 	/**
 	 * NOT CURRENTLY IMPLEMENTED IN WORKING PROGRAM,
@@ -21,6 +22,15 @@ public class DiGraph implements Graph {
 	public DiGraph() {
 		_vertices = new LinkedList<Vertex>();
 	}
+	/**
+	 * Creates a new named directed Graph
+	 * @param name
+	 */
+	public DiGraph(String name) {
+		_vertices = new LinkedList<Vertex>();
+		_name = name;
+	}
+	
 	/**
 	 * Sets the parent/container of this graph
 	 */
@@ -38,6 +48,7 @@ public class DiGraph implements Graph {
 	@Override
 	public void addVertex(Vertex u) {
 		_vertices.add(u);
+		u.setGraph(this);
 	}
 	
 	/**
@@ -53,8 +64,11 @@ public class DiGraph implements Graph {
 	 */
 	@Override
 	public void addEdge(Vertex u, Vertex v) {
-		Edge newEdge = new Edge(u,v);
-		u.addEdge(newEdge);//will need to change nature of how edges are added for directions if
+		Edge newEdge = new DirectedEdge(u,v);
+		u.addEdge(newEdge);
+		v.addEdge(newEdge);
+		
+		//will need to change nature of how edges are added for directions if
 		//both outgoing/ingoing lists of edges will be tracked
 	}
 	
@@ -118,6 +132,6 @@ public class DiGraph implements Graph {
 	 * provide a string showing the class name of any instance
 	 */
 	public String toString() {
-		return getClass().getSimpleName();
+		return getClass().getSimpleName()+": "+_name;
 	}
 }

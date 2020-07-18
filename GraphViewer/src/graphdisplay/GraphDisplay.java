@@ -60,8 +60,8 @@ public class GraphDisplay extends JPanel {
 	private GraphTreeAdapter _treeModelAdapter;
 
 	//UserInput components
-	//private JButton _newGraph;
-	//private JButton _deleteGraph;
+	private JButton _newGraph;
+	private JButton _deleteGraph;
 	private JButton _newVertex;
 	private JButton _deleteVertex;
 	private JButton _newEdge;
@@ -128,6 +128,35 @@ public class GraphDisplay extends JPanel {
 	 *  joining to another vertex is provided, after submission the edge is added to the model and tree under each vertex
 	 */
 	private void setupEventHandlers() {
+		
+		//event handling code for a new graph instance, must select the root/graph container to add a new graph into
+		_newGraph.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FormComponent form = FormResolver.getForm();
+				
+				FormHandler handler = FormResolver.getFormHandler(NormalGraph.class,_model , null);
+				form.setFormHandler(handler);
+				form.prepare();
+				form.setLocationRelativeTo(null);
+				form.setVisible(true);
+				
+				_treeView.updateUI();
+			}
+			
+		});
+		
+		//event handling code for deleting a graph. must select the graph to be deleted
+		_deleteGraph.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TreePath selectionPath = _treeView.getSelectionPath();
+				_graphSelected = (Graph)selectionPath.getLastPathComponent();
+				_model.removeGraph(_graphSelected);
+				_treeView.updateUI();
+				_treeView.setSelectionRow(0);
+			}
+			
+		});
+		
 		//event handling code for new vertex button, must have selected graph you wish vertex to be added to
 		_newVertex.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -193,6 +222,8 @@ public class GraphDisplay extends JPanel {
 			public void valueChanged(TreeSelectionEvent e) {
 				TreePath selectionPath = _treeView.getSelectionPath();
 				if(selectionPath.getLastPathComponent() instanceof GraphContainer) {
+					_newGraph.setEnabled(true);
+					_deleteGraph.setEnabled(false);
 					_newVertex.setEnabled(false);
 					_deleteVertex.setEnabled(false);
 					_newEdge.setEnabled(false);
@@ -200,7 +231,9 @@ public class GraphDisplay extends JPanel {
 				}
 				if(selectionPath.getLastPathComponent() instanceof Graph &&!(selectionPath.getLastPathComponent() instanceof GraphContainer)) {
 					_graphSelected = (Graph) selectionPath.getLastPathComponent();
-
+					
+					_newGraph.setEnabled(false);
+					_deleteGraph.setEnabled(true);
 					_newVertex.setEnabled(_graphSelected instanceof Graph && !(_graphSelected instanceof GraphContainer));
 					_deleteVertex.setEnabled(false);
 					_newEdge.setEnabled(false);
@@ -208,7 +241,9 @@ public class GraphDisplay extends JPanel {
 				}
 				else if(selectionPath.getLastPathComponent() instanceof Vertex ) {
 					_vertexSelected = (Vertex)	selectionPath.getLastPathComponent();
-
+					
+					_newGraph.setEnabled(false);
+					_deleteGraph.setEnabled(false);
 					_newEdge.setEnabled(_vertexSelected instanceof Vertex);
 					_deleteEdge.setEnabled(false);
 					_newVertex.setEnabled(false);
@@ -216,7 +251,9 @@ public class GraphDisplay extends JPanel {
 				}
 				else if (selectionPath.getLastPathComponent() instanceof Edge ) {
 					_edgeSelected = (Edge) selectionPath.getLastPathComponent();
-
+					
+					_newGraph.setEnabled(false);
+					_deleteGraph.setEnabled(false);
 					_newEdge.setEnabled(false);
 					_deleteEdge.setEnabled(_edgeSelected instanceof Edge);
 					_newVertex.setEnabled(false);
@@ -255,15 +292,15 @@ public class GraphDisplay extends JPanel {
 		//Set up a panel to hold the buttons to control addition/removal of nodes
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		buttonPanel.setBorder(BorderFactory.createTitledBorder("Graph Options"));
-		//_newGraph = new JButton("New Graph");
-		//_deleteGraph = new JButton("Delete Graph");
+		_newGraph = new JButton("New Graph");
+		_deleteGraph = new JButton("Delete Graph");
 		_newVertex = new JButton("add Vertex");
 		_deleteVertex = new JButton("remove Vertex");
 		_newEdge = new JButton("add Edge");
 		_deleteEdge = new JButton("remove Edge");
 		
-			//buttonPanel.add(_newGraph);
-			//buttonPanel.add(_deleteGraph);
+		buttonPanel.add(_newGraph);
+		buttonPanel.add(_deleteGraph);
 		buttonPanel.add(_newVertex);
 		buttonPanel.add(_deleteVertex);
 		buttonPanel.add(_newEdge);

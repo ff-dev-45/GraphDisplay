@@ -14,12 +14,17 @@ import java.util.List;
 public class NormalGraph implements Graph {
 	private List<Vertex> _vertices;
 	private GraphContainer _container;
+	private String _name = "Graph";
 	
+	public NormalGraph() {
+		_vertices = new LinkedList<Vertex>();
+	}
 	/**
 	 * creates a new NormalGraph instance
 	 */
-	public NormalGraph() {
+	public NormalGraph(String name) {
 		_vertices = new LinkedList<Vertex>();
+		_name = name;
 	}
 	
 	/**
@@ -107,7 +112,7 @@ public class NormalGraph implements Graph {
 	 * return the class name of the vertex 
 	 */
 	public String toString() {
-		return getClass().getSimpleName();
+		return getClass().getSimpleName()+": "+_name;
 	}
 	
 	/**

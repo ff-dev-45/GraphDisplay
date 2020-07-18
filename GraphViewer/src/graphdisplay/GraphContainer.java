@@ -129,7 +129,7 @@ public class GraphContainer implements Graph {
 	}
 	
 	/**
-	 * No path from a graphContainer as this is the root of the tree
+	 * path from the graphContainer as this is the root of the tree
 	 */
 	@Override
 	public List<Object> path() {
