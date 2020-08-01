@@ -101,6 +101,12 @@ public class GraphContainer implements Graph {
 	 */
 	@Override
 	public void paint(Painter painter) {
+		for(Integer i=0;i<8;i++) {
+			painter.drawText(i.toString(),i*100+35,0,20,20);
+		}
+		for(Integer j =0;j<8;j++){
+			painter.drawText(j.toString(),0,j*100+25,20,20);
+		}
 		for(Graph graph: _graphs) {
 			graph.paint(painter);
 		}
