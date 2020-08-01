@@ -8,13 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -45,6 +39,7 @@ public class GraphDisplay extends JPanel {
 
 	private static final int DEFAULT_GRAPH_WIDTH = 800;
 	private static final int DEFAULT_GRAPH_HEIGHT = 800;
+	private static final int DELAY = 25;
 
 	private Dimension _dimensions;
 
@@ -102,6 +97,13 @@ public class GraphDisplay extends JPanel {
 
 		//set the default selection path for the first graph in the tree
 		_treeView.setSelectionPath(new TreePath(_model.root().graphAt(0)));
+
+		Timer timer = new Timer(DELAY, new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				_model.draw();
+			}
+		});
+		timer.start();
 	}
 	/*
 	 * Sets up base model, can add new vertices/edges but it is recommended to build

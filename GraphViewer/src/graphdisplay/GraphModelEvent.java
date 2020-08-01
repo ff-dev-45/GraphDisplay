@@ -10,7 +10,7 @@ package graphdisplay;
 
 public class GraphModelEvent {
 	//type of events
-	public enum EventType {GraphAdded, GraphRemoved, VertexAdded, VertexRemoved, EdgeAdded, EdgeRemoved};
+	public enum EventType {GraphAdded, GraphRemoved, VertexAdded, VertexRemoved, EdgeAdded, EdgeRemoved, Draw};
 	
 	private EventType _type;	//Event type
 	private Graph _operand;		//Graph this event is from
@@ -100,6 +100,11 @@ public class GraphModelEvent {
 	 */
 	public static GraphModelEvent makeEdgeRemovedEvent (Graph graph, GraphContainer root, int index, GraphModel source, Vertex vertex, Edge edge) {
 		return new GraphModelEvent(EventType.EdgeRemoved, graph, root, index, source, vertex, edge);
+	}
+
+	public static GraphModelEvent makeGraphDrawEvent(GraphContainer root, GraphModel graphModel){
+		int index = -1;
+		return new GraphModelEvent(EventType.Draw, root, root,index, graphModel);
 	}
 	
 	//Private constructor for creating the GraphModelEvents with the required data

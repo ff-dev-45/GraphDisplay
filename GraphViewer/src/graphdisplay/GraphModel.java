@@ -147,6 +147,10 @@ public class GraphModel {
 		
 		fire(GraphModelEvent.makeVertexRemovedEvent(graph, _graph, index, this, vertex));
 	}
+
+	public void draw(){
+		fire(GraphModelEvent.makeGraphDrawEvent(_graph, this));
+	}
 	
 	/**
 	 * Adds a GraphModelListener to be registered with this GraphModel to be notified of updates
